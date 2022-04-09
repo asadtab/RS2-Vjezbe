@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using eProdaja.Model;
 
 namespace eProdaja.Services
 {
-    public class Proizvodi
+    public interface IJediniceMjereService
     {
-        public int ID { get; set; }
-        public string Naziv { get; set; }
+        IEnumerable<JediniceMjere> Get();
+        JediniceMjere GetById(int id);
+
     }
 }

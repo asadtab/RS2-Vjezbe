@@ -1,5 +1,6 @@
-﻿using eProdaja.Services;
-using eProdaja.Services.Database;
+﻿using eProdaja.Model;
+using eProdaja.Services;
+
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
