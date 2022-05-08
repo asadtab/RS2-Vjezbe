@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿    using AutoMapper;
+using eProdaja.Model.Search_objects;
 using eProdaja.Services.Database;
 using System;
 using System.Collections.Generic;
@@ -8,28 +9,27 @@ using System.Threading.Tasks;
 
 namespace eProdaja.Services
 {
-    public class JediniceMjereService: IJediniceMjereService
+    public class JediniceMjereService: BaseService<Model.JediniceMjere, Database.JediniceMjere, JediniceMjereSearchObject>, IJediniceMjereService
     {
-        public eProdajaContext Context{ get; set; }
-        public IMapper Mapper { get; set; }
-        public JediniceMjereService(eProdajaContext context, IMapper mapper)
+        public JediniceMjereService(eProdajaContext context, IMapper mapper): base (context, mapper)
         {
-            Context= context;
-            Mapper = mapper;
         }
 
-        public IEnumerable<Model.JediniceMjere> Get()
+        public override IQueryable<JediniceMjere> AddFilter(IQueryable<JediniceMjere> query, JediniceMjereSearchObject search = null)
         {
-            var result = Context.JediniceMjeres.ToList();
+            var filteredQuery = base.AddFilter(query, search);
 
-            return Mapper.Map<List<Model.JediniceMjere>>(result);
-        }
+            if (!string.IsNullOrEmpty(search?.Naziv))
+            {
+                filteredQuery = filteredQuery.Where(x => x.Naziv == search.Naziv);
+            }
 
-        public Model.JediniceMjere GetById(int id)
-        {
-            var result = Context.JediniceMjeres.Find(id);
+            if(search?.JedinicaMjereID.HasValue == true)
+            {
+                filteredQuery = filteredQuery.Where(x => x.JedinicaMjereId == search.JedinicaMjereID);
+            }
 
-            return Mapper.Map<Model.JediniceMjere>(result);
+            return filteredQuery;
         }
     }
 }

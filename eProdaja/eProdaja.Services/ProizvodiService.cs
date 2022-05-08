@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using eProdaja.Model.Requests;
+using eProdaja.Model.Search_objects;
 using eProdaja.Services.Database;
 using System;
 using System.Collections.Generic;
@@ -8,29 +10,30 @@ using System.Threading.Tasks;
 
 namespace eProdaja.Services
 {
-    public class ProizvodiService: IProizvodiService
+    public class ProizvodiService: BaseCRUDService<Model.Proizvodi, Database.Proizvodi, ProizvodiSearchObject, ProizvodiInsertRequest, ProizvodiUpdateRequest>, IProizvodiService
     {
-        public eProdajaContext Context { get; set; }
-
-        public IMapper Mapper { get; set; }
-        public ProizvodiService(eProdajaContext context, IMapper mapper)
+        public ProizvodiService(eProdajaContext context, IMapper mapper) : base(context, mapper)
         {
-            Context = context;
-            Mapper = mapper;
         }
 
-        public IEnumerable<Model.Proizvodi> Get()
-        {
-            var result = Context.Proizvodis.ToList();
+        /*  public override IEnumerable<Model.Proizvodi> Get()
+          {
+              return base.Get();
+          }*/
 
-            return Mapper.Map<List<Model.Proizvodi>>(result);
+        public override IQueryable<Proizvodi> AddFilter(IQueryable<Proizvodi> query, ProizvodiSearchObject search = null)
+        {
+            var filteredQuery = base.AddFilter(query, search);
+
+            if(!string.IsNullOrWhiteSpace(search?.Sifra))
+                filteredQuery = filteredQuery.Where(s => s.Sifra == search.Sifra);
+
+            if (!string.IsNullOrWhiteSpace(search?.Naziv))
+                filteredQuery = filteredQuery.Where(s => s.Naziv.Contains(search.Naziv));
+
+            return filteredQuery;
         }
 
-        public Model.Proizvodi  GetById(int id)
-        {
-            var result = Context.Proizvodis.Find(id);
 
-            return Mapper.Map<Model.Proizvodi>(result);
-        }
     }
 }

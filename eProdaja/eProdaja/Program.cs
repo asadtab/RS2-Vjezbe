@@ -1,3 +1,4 @@
+using eProdaja.Model.Search_objects;
 using eProdaja.Services;
 using eProdaja.Services.Database;
 using Microsoft.EntityFrameworkCore;

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using eProdaja.Model;
+using eProdaja.Model.Requests;
+using eProdaja.Model.Search_objects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,6 +30,26 @@ namespace eProdaja.Services
         public Model.Proizvodi GetById(int id)
         {
             return ProizvodiList.FirstOrDefault(x => x.ProizvodId == id);
+        }
+
+        public IEnumerable<Proizvodi> Get(ProizvodiSearchObject search = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Proizvodi Insert(ProizvodiInsertRequest insert)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Proizvodi Update(int id, ProizvodiInsertRequest update)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Proizvodi Update(int id, ProizvodiUpdateRequest update)
+        {
+            throw new NotImplementedException();
         }
     }
 }
